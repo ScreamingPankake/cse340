@@ -1,6 +1,7 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import { testConnection } from './src/models/db';
 
 // Define the the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -30,21 +31,30 @@ app.use(express.static(path.join(__dirname, 'public')));
   * Routes
   */
 app.get('/', (req, res) => {
-    const title = 'Home';
-    res.render('home', { title });
+  const title = 'Home';
+  res.render('home', { title });
 });
 
 app.get('/organizations', (req, res) => {
-    const title = 'Organizations';
-    res.render('organizations', { title });
+  const title = 'Organizations';
+  res.render('organizations', { title });
 });
 
 app.get('/projects', (req, res) => {
-    const title = 'Projects';
-    res.render('projects', { title });
+  const title = 'Projects';
+  res.render('projects', { title });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://127.0.0.1:${PORT}`);
-  console.log(`Environment: ${NODE_ENV}`);
+app.listen(PORT, async () => {
+
+  try {
+    await testConnection();
+    console.log(`Server is running at http://127.0.0.1:${PORT}`);
+    console.log(`Environment: ${NODE_ENV}`);
+  } catch (error) {
+    console.error(`Failed to connect to the database. ${error.message}`);
+    process.exit(1); // Exit the process with an error code
+  }
+
+
 });
