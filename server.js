@@ -45,13 +45,12 @@ app.get('/organizations', async (req, res) => {
   res.render('organizations', { title, organizations });
 });
 
-app.get('/projects', async (req, res, next) => {
-  try {
-    const projects = await getAllProjects();
-    res.render('projects', { projects });
-  } catch (err) {
-    next(err);
-  }
+app.get('/projects', async (req, res) => {
+
+  const projects = await getAllProjects();
+
+  const title = 'Projects';
+  res.render('projects', { title, projects });
 });
 
 app.listen(PORT, async () => {
