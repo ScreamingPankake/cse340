@@ -1,0 +1,20 @@
+<%- include('partials/header') %>
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
+        <h2>Upcoming Service Projects</h2>
+
+        <ul>
+            <% if (categories && categories.length> 0) { %>
+                <% categories.forEach(category=> { %>
+                    <li>
+                        <%= category.category_name %>
+                    </li>
+                    <% }) %>
+                        <% } else { %>
+                            <li>No projects found</li>
+                            <% } %>
+        </ul>
+    </main>
+    <%- include('partials/footer') %>

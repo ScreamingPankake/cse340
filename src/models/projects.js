@@ -2,11 +2,19 @@ import db from './db.js';
 
 const getAllProjects = async () => {
     const query = `
-    Select project_id, organization_id, title, description, location, date, organizations.name as organization_name
-    FROM public.projects
-    JOIN organizations
-    ON projects.organization_id = organizations.organization_id`;
-    
+    SELECT 
+        p.project_id, 
+        p.organization_id, 
+        p.title, 
+        p.description, 
+        p.location, 
+        p.date, 
+        o.name AS organization_name
+    FROM public.projects p
+    JOIN organizations o
+    ON p.organization_id = o.organization_id
+    `;
+
     const result = await db.query(query);
     return result.rows;
 }
