@@ -9,7 +9,7 @@
                 <li>
                     <img src="images/<%= org.logofile %>" alt="<%= org.name %> logo">
                     <strong>
-                        <%= org.name %>
+                        <a href="/organization/<%= org.organization_id %>"><%= org.name %></a>
                     </strong>: <%= org.email %>
                 </li>
             <% }) %>

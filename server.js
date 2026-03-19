@@ -2,9 +2,7 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
-import { getAllOrganizations } from './src/models/organizations.js';
-import { getAllProjects } from './src/models/projects.js';
-import { getCategoriesByProject } from './src/models/categories.js';
+import router from './src/controllers/routes.js';
 
 // Define the the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -30,38 +28,55 @@ app.set('views', path.join(__dirname, 'src/views'));
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// Middleware
+app.use((req, res, next) => {
+  if (NODE_ENV === 'development') {
+    console.log(`${req.method} ${req.url}`);
+  }
+  next();
+});
+
+app.use((req, res, next) => {
+  res.locals.NODE_ENV = NODE_ENV;
+
+  next();
+});
+
+
 /**
   * Routes
   */
-app.get('/', (req, res) => {
-  const title = 'Home';
-  res.render('home', { title });
+
+app.use(router);
+
+
+// ERROR handeling
+
+app.use((req, res, next) => {
+  const err = new Error('Page Not Found');
+  err.status = 404;
+  next(err);
 });
 
-app.get('/organizations', async (req, res) => {
+app.use((err, req, res, next) => {
 
-  const organizations = await getAllOrganizations();
+  console.error('Error occurred:', err.message);
+  console.error('Stack trace:', err.stack);
 
-  const title = 'Organizations';
-  res.render('organizations', { title, organizations });
-});
 
-app.get('/projects', async (req, res) => {
+  const status = err.status || 500;
+  const template = status === 404 ? '404' : '500';
 
-  const projects = await getAllProjects();
-  console.log('Projects retrieved:', projects);
 
-  const title = 'Projects';
-  res.render('projects', { title, projects });
-});
+  const context = {
+    title: status === 404 ? 'Page Not Found' : 'Server Error',
+    error: err.message,
+    stack: err.stack
+  };
 
-app.get('/categories', async (req, res) => {
-  
-  const categories = await getCategoriesByProject();
-  console.log('Categories retrieved:', categories);
-  
-  const title = 'Categories';
-  res.render('categories', { title, categories });
+
+  res.status(status).render(`errors/${template}`, context);
 });
 
 app.listen(PORT, async () => {

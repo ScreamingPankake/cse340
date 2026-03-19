@@ -1,7 +1,7 @@
 import db from './db.js';
 
 // Get all categories for projects
-const getCategoriesByProject = async () => {
+const getAllCategories = async () => {
   const query = `
     SELECT DISTINCT
       pc.project_id,
@@ -16,4 +16,4 @@ const getCategoriesByProject = async () => {
   return result.rows; // [{ project_id, category_id, category_name }, ...]
 }
 
-export { getCategoriesByProject };
+export { getAllCategories };
