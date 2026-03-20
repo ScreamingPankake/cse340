@@ -1,20 +1,26 @@
 <%- include('partials/header') %>
-    <main>
-        <h1>
-            <%= title %>
-        </h1>
-        <h2>Upcoming Service Projects</h2>
-            
-        <ul>
-        <% if (projects && projects.length > 0) { %>
-          <% projects.forEach(project => { %>
-            <li>
-              <%= project.title %> - <%= project.description %>
-            </li>
+  <main>
+    <h1>
+      <%= title %>
+    </h1>
+    <h2>Upcoming Service Projects</h2>
+
+    <ul>
+      <% if (projects && projects.length> 0) { %>
+        <% projects.forEach(project=> { %>
+          <li>
+            <a href="/project/<%= project.project_id %>">
+              <%= project.title %>
+            </a>
+            - <%= project.description %>
+              (<a href="/organization/<%= project.organization_id %>">
+                <%= project.organization_name %>
+              </a>)
+          </li>
           <% }) %>
-        <% } else { %>
-          <li>No projects found</li>
-        <% } %>
-        </ul>
-    </main>
-    <%- include('partials/footer') %>
+            <% } else { %>
+              <li>No projects found</li>
+              <% } %>
+    </ul>
+  </main>
+  <%- include('partials/footer') %>

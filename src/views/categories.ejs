@@ -9,11 +9,13 @@
             <% if (categories && categories.length> 0) { %>
                 <% categories.forEach(category=> { %>
                     <li>
-                        <%= category.category_name %>
+                        <a href="/category/<%= category.category_id %>">
+                            <%= category.category_name %>
+                        </a>
                     </li>
                     <% }) %>
                         <% } else { %>
-                            <li>No projects found</li>
+                            <li>No categories found</li>
                             <% } %>
         </ul>
     </main>
