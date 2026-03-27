@@ -3,7 +3,14 @@ import express from 'express';
 import { homePage } from './index.js';
 import { organizationsPage } from './organizations.js';
 import { projectsPage, projectDetailsPage } from './projects.js';
-import { categoriesPage, categoryDetailsPage } from './categories.js';
+import {
+    categoriesPage,
+    categoryDetailsPage,
+    newCategoryPage,
+    createCategoryPage,
+    editCategoryPage,
+    updateCategoryPage
+} from './categories.js';
 import { testErrorPage } from './errors.js';
 import { showOrganizationDetailsPage } from './organizations.js';
 
@@ -15,6 +22,12 @@ router.get('/projects', projectsPage);
 router.get('/project/:id', projectDetailsPage);
 router.get('/categories', categoriesPage);
 router.get('/category/:id', categoryDetailsPage);
+
+router.get('/new-category', newCategoryPage);
+router.post('/new-category', createCategoryPage);
+router.get('/edit-category/:id', editCategoryPage);
+router.post('/edit-category/:id', updateCategoryPage);
+
 router.get('/test-error', testErrorPage);
 router.get('/organization/:id', showOrganizationDetailsPage);
 
