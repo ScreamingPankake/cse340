@@ -1,0 +1,58 @@
+<%- include('partials/header') %>
+    <main>
+        <h1>Edit Project</h1>
+
+        <% if (errors && errors.length > 0) { %>
+            <div class="errors" role="alert" aria-live="assertive">
+                <ul>
+                    <% errors.forEach(error => { %>
+                        <li>
+                            <%= error %>
+                        </li>
+                        <% }) %>
+                </ul>
+            </div>
+            <% } %>
+
+                <form method="POST" action="/edit-project/<%= project.project_id %>" novalidate>
+                    <input type="hidden" name="project_id" value="<%= project.project_id %>" />
+
+                    <label for="organization_id">Organization</label>
+                    <select id="organization_id" name="organization_id" required aria-required="true">
+                        <option value="">-- Select an Organization --</option>
+                        <% organizations.forEach(org => { %>
+                            <option value="<%= org.organization_id %>" 
+                                <% if (project && project.organization_id == org.organization_id) { %>selected<% } %>>
+                                <%= org.name %>
+                            </option>
+                            <% }) %>
+                    </select>
+
+                    <label for="title">Project Title</label>
+                    <input id="title" name="title" type="text"
+                        value="<%= project && project.title ? project.title : '' %>" required
+                        maxlength="200" aria-required="true" />
+                    <div class="hint">Required. 3-200 characters.</div>
+
+                    <label for="description">Project Description</label>
+                    <textarea id="description" name="description" required maxlength="1000" aria-required="true"><%= project && project.description ? project.description : '' %></textarea>
+                    <div class="hint">Required. Maximum 1000 characters.</div>
+
+                    <label for="location">Project Location</label>
+                    <input id="location" name="location" type="text"
+                        value="<%= project && project.location ? project.location : '' %>" required
+                        maxlength="200" aria-required="true" />
+                    <div class="hint">Required. Maximum 200 characters.</div>
+
+                    <label for="date">Project Date</label>
+                    <input id="date" name="date" type="datetime-local"
+                        value="<%= project && project.date ? project.date : '' %>" required
+                        aria-required="true" />
+                    <div class="hint">Required. Select a date and time.</div>
+
+                    <button type="submit">Save Changes</button>
+                </form>
+
+                <p><a href="/projects">Back to Projects</a></p>
+    </main>
+    <%- include('partials/footer') %>

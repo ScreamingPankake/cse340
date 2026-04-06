@@ -1,22 +1,15 @@
+import { body, validationResult } from 'express-validator';
 import { getAllCategories, getCategoryById, getProjectsByCategoryId, createCategory, updateCategory } from '../models/categories.js';
 
-const validateCategoryName = (category_name) => {
-  const errors = [];
-
-  if (!category_name || category_name.trim().length === 0) {
-    errors.push('Category name is required.');
-  } else {
-    const trimmed = category_name.trim();
-    if (trimmed.length < 3) {
-      errors.push('Category name must be at least 3 characters.');
-    }
-    if (trimmed.length > 100) {
-      errors.push('Category name must be 100 characters or fewer.');
-    }
-  }
-
-  return errors;
-};
+// Define validation and sanitization rules for category form
+const categoryValidation = [
+    body('category_name')
+        .trim()
+        .notEmpty()
+        .withMessage('Category name is required.')
+        .isLength({ min: 3, max: 100 })
+        .withMessage('Category name must be between 3 and 100 characters.')
+];
 
 const categoriesPage = async (req, res) => {
   const categories = await getAllCategories();
@@ -46,19 +39,21 @@ const newCategoryPage = (req, res) => {
 };
 
 const createCategoryPage = async (req, res, next) => {
-  const categoryName = req.body.category_name;
-  const errors = validateCategoryName(categoryName);
-
-  if (errors.length > 0) {
+  // Check for validation errors
+  const results = validationResult(req);
+  if (!results.isEmpty()) {
+    // Validation failed - convert to error messages
+    const errors = results.array().map(err => err.msg);
     return res.status(400).render('new-category', {
       title: 'Create New Category',
       errors,
-      category: { category_name: categoryName }
+      category: { category_name: req.body.category_name }
     });
   }
 
   try {
-    await createCategory(categoryName.trim());
+    const { category_name } = req.body;
+    await createCategory(category_name);
     res.redirect('/categories');
   } catch (err) {
     next(err);
@@ -80,19 +75,22 @@ const editCategoryPage = async (req, res, next) => {
 
 const updateCategoryPage = async (req, res, next) => {
   const categoryId = req.params.id;
-  const categoryName = req.body.category_name;
-  const errors = validateCategoryName(categoryName);
-
-  if (errors.length > 0) {
+  
+  // Check for validation errors
+  const results = validationResult(req);
+  if (!results.isEmpty()) {
+    // Validation failed - convert to error messages
+    const errors = results.array().map(err => err.msg);
     return res.status(400).render('edit-category', {
       title: 'Edit Category',
       errors,
-      category: { category_id: categoryId, category_name: categoryName }
+      category: { category_id: categoryId, category_name: req.body.category_name }
     });
   }
 
   try {
-    const updated = await updateCategory(categoryId, categoryName.trim());
+    const { category_name } = req.body;
+    const updated = await updateCategory(categoryId, category_name);
     if (!updated) {
       const err = new Error('Category not found');
       err.status = 404;
@@ -111,5 +109,6 @@ export {
   newCategoryPage,
   createCategoryPage,
   editCategoryPage,
-  updateCategoryPage
+  updateCategoryPage,
+  categoryValidation
 };

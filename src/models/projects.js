@@ -65,4 +65,31 @@ const getProjectsByOrganizationId = async (organizationId) => {
   return result.rows;
 };
 
-export { getAllProjects, getProjectById, getProjectsByOrganizationId };
+const createProject = async (organizationId, title, description, location, date) => {
+  const query = `
+    INSERT INTO projects (organization_id, title, description, location, date)
+    VALUES ($1, $2, $3, $4, $5)
+    RETURNING project_id;
+  `;
+  
+  const query_params = [organizationId, title, description, location, date];
+  const result = await db.query(query, query_params);
+  
+  return result.rows[0].project_id;
+};
+
+const updateProject = async (projectId, organizationId, title, description, location, date) => {
+  const query = `
+    UPDATE projects
+    SET organization_id = $1, title = $2, description = $3, location = $4, date = $5
+    WHERE project_id = $6
+    RETURNING project_id;
+  `;
+  
+  const query_params = [organizationId, title, description, location, date, projectId];
+  const result = await db.query(query, query_params);
+  
+  return result.rows.length > 0;
+};
+
+export { getAllProjects, getProjectById, getProjectsByOrganizationId, createProject, updateProject };
