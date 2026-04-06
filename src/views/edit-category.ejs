@@ -14,7 +14,7 @@
             </div>
             <% } %>
 
-                <form method="POST" action="/edit-category/<%= category.category_id %>" novalidate>
+                <form method="POST" action="/edit-category/<%= category.category_id %>">
                     <input type="hidden" name="category_id" value="<%= category.category_id %>" />
 
                     <label for="category_name">Category Name</label>

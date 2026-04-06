@@ -14,7 +14,7 @@
             </div>
             <% } %>
 
-                <form method="POST" action="/new-category" novalidate>
+                <form method="POST" action="/new-category">
                     <label for="category_name">Category Name</label>
                     <input id="category_name" name="category_name" type="text"
                         value="<%= category && category.category_name ? category.category_name : '' %>" required
