@@ -2,6 +2,7 @@
   "name": "cse340",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "dev": "nodemon",
@@ -19,8 +20,10 @@
   },
   "homepage": "https://github.com/ScreamingPankake/cse340#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "ejs": "^5.0.1",
     "express": "^5.2.1",
+    "express-session": "^1.17.0",
     "express-validator": "^7.0.0",
     "pg": "^8.20.0"
   },

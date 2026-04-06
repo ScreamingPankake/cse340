@@ -1,4 +1,5 @@
 import express from 'express';
+import session from 'express-session';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
@@ -26,6 +27,23 @@ app.set('views', path.join(__dirname, 'src/views'));
   */
 
 app.use(express.urlencoded({ extended: true }));
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'service-network-secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: NODE_ENV === 'production',
+    sameSite: 'lax'
+  }
+}));
+
+app.use((req, res, next) => {
+  res.locals.currentUser = req.session.user || null;
+  res.locals.flash = req.session.flash || null;
+  delete req.session.flash;
+  next();
+});
 
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));

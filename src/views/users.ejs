@@ -1,0 +1,30 @@
+<%- include('partials/header') %>
+    <main>
+        <h1><%= title %></h1>
+
+        <% if (users && users.length > 0) { %>
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach(user => { %>
+                        <tr>
+                            <td><%= user.name %></td>
+                            <td><%= user.email %></td>
+                            <td><%= user.role %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>No registered users found.</p>
+        <% } %>
+
+        <p><a class="button" href="/">Back to Dashboard</a></p>
+    </main>
+<%- include('partials/footer') %>

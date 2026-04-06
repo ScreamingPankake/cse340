@@ -87,7 +87,9 @@ label {
     color: #0f172a;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="email"],
+input[type="password"] {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid #cbd5e1;
@@ -97,7 +99,9 @@ input[type="text"] {
     font-size: 1rem;
 }
 
-input[type="text"]:focus {
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
     outline: none;
     border-color: #2563eb;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
@@ -107,6 +111,54 @@ input[type="text"]:focus {
     font-size: 0.95rem;
     color: #475569;
     margin-top: 0.35rem;
+}
+
+.flash {
+    margin: 1rem 0;
+    padding: 16px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.flash.success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+}
+
+.flash.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+}
+
+.nav-user {
+    margin-left: 1rem;
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    color: #334155;
+}
+
+table.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+}
+
+table.user-table th,
+table.user-table td {
+    padding: 12px 14px;
+    border: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+table.user-table th {
+    background: #f8fafc;
+    color: #0f172a;
+}
+
+table.user-table tbody tr:nth-child(even) {
+    background: #f8fafc;
 }
 
 a {

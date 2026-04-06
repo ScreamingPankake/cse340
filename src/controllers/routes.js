@@ -29,10 +29,28 @@ import {
     categoryValidation
 } from './categories.js';
 import { testErrorPage } from './errors.js';
+import {
+    showRegisterForm,
+    processRegisterForm,
+    showLoginForm,
+    processLoginForm,
+    logout,
+    registerValidation,
+    loginValidation
+} from './auth.js';
+import { usersPage } from './users.js';
+import { requireLogin, requireRole } from './authMiddleware.js';
 
 const router = express.Router();
 
 router.get('/', homePage);
+
+// Authentication routes
+router.get('/register', showRegisterForm);
+router.post('/register', registerValidation, processRegisterForm);
+router.get('/login', showLoginForm);
+router.post('/login', loginValidation, processLoginForm);
+router.get('/logout', logout);
 
 // Organization routes
 router.get('/organizations', organizationsPage);
@@ -57,6 +75,9 @@ router.get('/new-category', newCategoryPage);
 router.post('/new-category', categoryValidation, createCategoryPage);
 router.get('/edit-category/:id', editCategoryPage);
 router.post('/edit-category/:id', categoryValidation, updateCategoryPage);
+
+// Admin-only user management
+router.get('/users', requireLogin, requireRole('admin'), usersPage);
 
 // Test error route
 router.get('/test-error', testErrorPage);
