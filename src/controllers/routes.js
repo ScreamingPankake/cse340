@@ -17,7 +17,10 @@ import {
     processNewProjectForm,
     showEditProjectForm,
     processEditProjectForm,
-    projectValidation
+    projectValidation,
+    volunteerForProject,
+    removeVolunteerFromProject,
+    showDashboard
 } from './projects.js';
 import {
     categoriesPage,
@@ -67,6 +70,11 @@ router.get('/new-project', showNewProjectForm);
 router.post('/new-project', projectValidation, processNewProjectForm);
 router.get('/edit-project/:id', showEditProjectForm);
 router.post('/edit-project/:id', projectValidation, processEditProjectForm);
+
+// Volunteer routes (protected by login)
+router.post('/project/:id/volunteer', requireLogin, volunteerForProject);
+router.post('/project/:id/remove-volunteer', requireLogin, removeVolunteerFromProject);
+router.get('/dashboard', requireLogin, showDashboard);
 
 // Category routes
 router.get('/categories', categoriesPage);

@@ -32,5 +32,22 @@
                             <li>No categories assigned to this project.</li>
                             <% } %>
         </ul>
+
+        <div class="volunteer-section">
+            <% if (currentUser) { %>
+                <% if (isUserVolunteering) { %>
+                    <p class="volunteer-status">✓ You are volunteering for this project</p>
+                    <form method="POST" action="/project/<%= project.project_id %>/remove-volunteer" style="display: inline;">
+                        <button type="submit" class="button button-danger">Remove as Volunteer</button>
+                    </form>
+                <% } else { %>
+                    <form method="POST" action="/project/<%= project.project_id %>/volunteer" style="display: inline;">
+                        <button type="submit" class="button">Volunteer for This Project</button>
+                    </form>
+                <% } %>
+            <% } else { %>
+                <p><a href="/login">Log in</a> to volunteer for this project.</p>
+            <% } %>
+        </div>
     </main>
     <%- include('partials/footer') %>

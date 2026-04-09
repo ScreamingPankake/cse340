@@ -1,0 +1,38 @@
+<%- include('partials/header') %>
+    <main>
+        <h1><%= title %></h1>
+        
+        <h2>My Volunteer Projects</h2>
+        
+        <% if (volunteerProjects && volunteerProjects.length > 0) { %>
+            <div class="projects-list">
+                <% volunteerProjects.forEach(project => { %>
+                    <div class="project-card">
+                        <h3><a href="/project/<%= project.project_id %>"><%= project.title %></a></h3>
+                        <p><strong>Organization:</strong> 
+                            <a href="/organization/<%= project.organization_id %>">
+                                <%= project.organization_name %>
+                            </a>
+                        </p>
+                        <p><strong>Location:</strong> <%= project.location %></p>
+                        <p><strong>Date:</strong> 
+                            <%= project.date ? new Date(project.date).toLocaleDateString() : 'TBD' %>
+                        </p>
+                        <p><strong>Description:</strong> <%= project.description %></p>
+                        <p class="volunteer-date">
+                            <em>Volunteered on: <%= new Date(project.volunteered_at).toLocaleDateString() %></em>
+                        </p>
+                        <form method="POST" action="/project/<%= project.project_id %>/remove-volunteer" style="display: inline;">
+                            <button type="submit" class="button button-danger">Remove as Volunteer</button>
+                        </form>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <div class="empty-state">
+                <p>You are not currently volunteering for any projects.</p>
+                <p><a href="/projects" class="button">Browse Projects</a></p>
+            </div>
+        <% } %>
+    </main>
+<%- include('partials/footer') %>
