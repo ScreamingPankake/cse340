@@ -20,17 +20,26 @@
                 <%= project.organization_name %>
             </a></p>
 
-        <h3>Category Tags</h3>
-        <ul>
-            <% if (categories && categories.length> 0) { %>
-                <% categories.forEach(category=> { %>
-                    <li><a href="/category/<%= category.category_id %>">
-                            <%= category.category_name %>
-                        </a></li>
-                    <% }) %>
-                        <% } else { %>
-                            <li>No categories assigned to this project.</li>
-                            <% } %>
-        </ul>
+        <% if (currentUser) { %>
+            <% if (isVolunteer) { %>
+                <p><strong>Status:</strong> You are volunteering for this project.</p>
+                <p><a href="/project/<%= project.project_id %>/remove-volunteer">Remove yourself as volunteer</a></p>
+                <% } else { %>
+                    <p><a href="/project/<%= project.project_id %>/volunteer">Volunteer for this project</a></p>
+                    <% } %>
+                        <% } %>
+
+                            <h3>Category Tags</h3>
+                            <ul>
+                                <% if (categories && categories.length> 0) { %>
+                                    <% categories.forEach(category=> { %>
+                                        <li><a href="/category/<%= category.category_id %>">
+                                                <%= category.category_name %>
+                                            </a></li>
+                                        <% }) %>
+                                            <% } else { %>
+                                                <li>No categories assigned to this project.</li>
+                                                <% } %>
+                            </ul>
     </main>
     <%- include('partials/footer') %>

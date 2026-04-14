@@ -1,0 +1,27 @@
+<%- include('partials/header') %>
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
+
+        <section>
+            <h2>Your Volunteer Projects</h2>
+            <% if (projects && projects.length> 0) { %>
+                <ul>
+                    <% projects.forEach(project=> { %>
+                        <li>
+                            <a href="/project/<%= project.project_id %>">
+                                <%= project.title %>
+                            </a>
+                            <span> — <%= project.organization_name %> </span>
+                            <a class="button-link" href="/project/<%= project.project_id %>/remove-volunteer">Remove
+                                volunteer</a>
+                        </li>
+                        <% }) %>
+                </ul>
+                <% } else { %>
+                    <p>You have not signed up to volunteer for any projects yet.</p>
+                    <% } %>
+        </section>
+    </main>
+    <%- include('partials/footer') %>

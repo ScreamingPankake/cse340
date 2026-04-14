@@ -1,8 +1,12 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import session from 'express-session';
+import dotenv from 'dotenv';
 import { testConnection } from './src/models/db.js';
 import router from './src/controllers/routes.js';
+
+dotenv.config();
 
 // Define the the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -30,6 +34,12 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'local-session-secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: NODE_ENV === 'production' }
+}));
 
 // Middleware
 app.use((req, res, next) => {
@@ -41,6 +51,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   res.locals.NODE_ENV = NODE_ENV;
+  res.locals.currentUser = req.session.user || null;
 
   next();
 });
